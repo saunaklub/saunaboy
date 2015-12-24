@@ -54,8 +54,7 @@ class SaunaBoy(pydle.MinimalClient):
          self.join(channel)
 
     def on_message(self, source, target, message):
-        if(source == 'saunaboy' and
-           (target == 'hackbart' or target == 'flavi0')):
+        if(source == 'saunaboy'):
             if(not message.startswith(',')):
                 self.message(message)
 
