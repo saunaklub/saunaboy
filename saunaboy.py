@@ -1,0 +1,162 @@
+import http.client
+import subprocess
+import shlex
+import random
+import time
+import re
+import pydle
+import getpass
+
+from flavors import *
+from meyers import *
+
+dnd_messages = [
+    "please do not disturb our conversation.",
+    "we are having a conversation here."]
+
+welcome_messages = [
+    "<>! It's an honor.",
+    "Hey <>, what's crackin'?",
+    "Hi <>, how ye doin'?",
+    "Salut <>!",
+    "Bonjour <>.",
+    "Moin <>.",
+    "Tach <>!"
+]
+
+command_pre_messages = [
+    "But of course, master <>!",
+    "Your wish is my command, <>.",
+    "Aye aye, Sir!",
+    "For you <>? Anytime!",
+    "It's an honor to serve you, <>."
+]
+
+command_post_messages = [
+    "Is that all for now?",
+    "Anything else you desire <>?",
+    "If you need anything else, I'm here for you."
+]
+
+command_denial_messages = [
+    "You did not seriously expect that to work, <>...",
+    "Yeah, right.",
+    "Nice try <>.",
+    "Forget it.",
+    "Better luck next time <>!",
+    "Sorry <>, but I take orders only from my creator.",
+    "Fuck off.",
+    "Leave me alone."
+]
+    
+class SaunaBoy(pydle.MinimalClient):
+    def on_connect(self):
+         self.join(channel)
+
+    def on_message(self, source, target, message):
+        if(source == 'saunaboy' and
+           (target == 'hackbart' or target == 'flavi0')):
+            if(not message.startswith(',')):
+                self.message(message)
+
+        print(source + ":" + target + "> " + message)
+        self.greeting(source, target, message)
+
+        if(message.startswith(',')):
+            if(message == ',aufguss'):
+                saunaboyAufguss(self)
+            if(message.startswith(',fortune')):
+                self.message("")
+                self.commandToChannel("fortune" + message[len(',fortune'):])
+                self.message("")
+            if(message == ',df'):
+                self.commandToChannel("df -h | grep -v tmpfs | grep -v udev")
+            if(message == ',health'):
+                self.commandPreMessage(target)
+                self.printRaidInfo()
+                self.commandPostMessage(target)
+            if(message == ',joke'):
+                self.jokeToChannel()
+            if(message == ',meyers'):
+                self.message(meyersItem())
+                
+    def on_join(self, channel, user):
+        if(user != 'saunaboy'):
+            self.message(random.choice(welcome_messages).replace("<>", user))
+                
+    def commandPreMessage(self, user):
+        self.message(random.choice(command_pre_messages).replace("<>", user))
+        self.message(' ')
+
+    def commandPostMessage(self, user):
+        self.message(' ')
+        self.message(random.choice(command_post_messages).replace("<>", user))
+
+    def commandDenialMessage(self, user):
+        self.message(random.choice(command_denial_messages).replace("<>", user))
+        
+    def printRaidInfo(self):
+        self.message("Reporting RAID status: files.saunaklub.net")
+        self.message(" ")
+
+        self.commandToChannel("sudo mdadm --detail /dev/md0 | sed -n '13,+5p; 25,+4p'")
+
+        message = ""
+        for letter in ['b', 'c', 'd', 'e']:
+            message += '/dev/sd' + letter + ': '
+            message += self.commandToString('sudo smartctl -H /dev/sd' + letter +
+                                            ' | grep "self-assessment test"')
+        self.message(message)
+
+    def commandToString(self, command):
+        process = subprocess.Popen(['bash', '-c', command],
+                                   stdin=subprocess.PIPE,
+                                   stdout=subprocess.PIPE)
+
+        out, _ = process.communicate()
+        return out.decode('utf-8')
+        
+    def commandToChannel(self, command):
+        process = subprocess.Popen(['bash', '-c', command],
+                                   stdin=subprocess.PIPE,
+                                   stdout=subprocess.PIPE)
+        out, _ = process.communicate()
+        out = out.decode('utf-8').rstrip('\n').replace('\r', '').expandtabs(tabsize=8)
+        self.message(out)
+
+    def jokeToChannel(self):
+        conn = http.client.HTTPConnection("www.allowe.com")
+        conn.request("GET", "/humor/cj-main/cyberjoke-archive.html?option=com_jokes&view=search&search=ffunny&funny=1")
+
+        r1 = conn.getresponse()
+        data1 = r1.read().decode('utf-8')
+        m = re.search('([0-9]+)', data1)
+
+        conn.request("GET", "/humor/cj-main/cyberjoke-archive.html?option=com_jokes&view=joke&id=" + str(m.group(0)))
+        r1 = conn.getresponse()
+        data1 = r1.read().decode('utf-8')
+
+        m = re.search('</b></p><p>(.*)</p><div class="ratingblock">', data1)
+
+        self.message(m.group(1))
+
+    def message(self, message):
+            print(message)
+            super().message(channel, message)
+        
+    def greeting(self, chan, nick, msg):
+        greet_re = re.compile('hi', re.IGNORECASE)
+
+        if greet_re.match(msg):
+            reply = nick + ": " + random.choice(greet_messages)
+            self.message(source, reply)
+
+channel = '#saunaklub'
+password = getpass.getpass("saunaboy password: ")
+password = 'saunaboy:'+password
+
+client = SaunaBoy('saunaboy', realname='Sven')
+client.connect('localhost', 16697,
+               tls=True, tls_verify=False,
+               password=password)
+client.handle_forever()
