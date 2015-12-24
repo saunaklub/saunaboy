@@ -1,0 +1,9 @@
+Our friendly IRC chatterbot for the #saunaklub hangout.
+
+Current features include:
+- ,joke: al lowe's cyberjoke3000
+- ,fortune print fortune, accepts parameters
+- ,meyers random effective series item
+- ,health files.saunaklub.net health information
+- ,df raid usage
+- ,aufguss make random aufguss from aroma database
