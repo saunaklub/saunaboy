@@ -9,6 +9,7 @@ import getpass
 
 from flavors import *
 from meyers import *
+from rezept import *
 
 dnd_messages = [
     "please do not disturb our conversation.",
@@ -75,9 +76,11 @@ class SaunaBoy(pydle.MinimalClient):
                 self.printRaidInfo()
                 self.commandPostMessage(target)
             if(message == ',joke'):
-                self.jokeToChannel()
+                self.message(cyberjoke())
             if(message == ',meyers'):
                 self.message(meyersItem())
+            if(message == ',rezept'):
+                self.message(rezeptChefkoch())
                 
     def on_join(self, channel, user):
         if(user != 'saunaboy'):
@@ -122,22 +125,6 @@ class SaunaBoy(pydle.MinimalClient):
         out, _ = process.communicate()
         out = out.decode('utf-8').rstrip('\n').replace('\r', '').expandtabs(tabsize=8)
         self.message(out)
-
-    def jokeToChannel(self):
-        conn = http.client.HTTPConnection("www.allowe.com")
-        conn.request("GET", "/humor/cj-main/cyberjoke-archive.html?option=com_jokes&view=search&search=ffunny&funny=1")
-
-        r1 = conn.getresponse()
-        data1 = r1.read().decode('utf-8')
-        m = re.search('([0-9]+)', data1)
-
-        conn.request("GET", "/humor/cj-main/cyberjoke-archive.html?option=com_jokes&view=joke&id=" + str(m.group(0)))
-        r1 = conn.getresponse()
-        data1 = r1.read().decode('utf-8')
-
-        m = re.search('</b></p><p>(.*)</p><div class="ratingblock">', data1)
-
-        self.message(m.group(1))
 
     def message(self, message):
             print(message)
