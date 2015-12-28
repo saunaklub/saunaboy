@@ -8,6 +8,7 @@ import pydle
 import getpass
 
 from flavors import *
+from joke import *
 from meyers import *
 from rezept import *
 
