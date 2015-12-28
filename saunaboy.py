@@ -5,7 +5,7 @@ import time
 import pydle
 import getpass
 
-from flavors import *
+from aufguss import *
 from joke import *
 from meyers import *
 from rezept import *
@@ -64,7 +64,7 @@ class SaunaBoy(pydle.MinimalClient):
 
         if(message.startswith(',')):
             if(message == ',aufguss'):
-                saunaboyAufguss(self)
+                self.action(aufguss())
             if(message.startswith(',fortune')):
                 self.message("")
                 self.commandToChannel("fortune" + message[len(',fortune'):])
@@ -82,7 +82,7 @@ class SaunaBoy(pydle.MinimalClient):
             if(message == ',rezept'):
                 self.message(rezeptChefkoch())
             if(message == ',cocktail'):
-                self.message('\x01ACTION '+'macht eine runde Cocktails:'+'\x01')
+                self.action('macht eine Runde Cocktails:')
                 self.message(cocktail())
                 
     def on_join(self, channel, user):
@@ -132,7 +132,10 @@ class SaunaBoy(pydle.MinimalClient):
     def message(self, message):
             print(message)
             super().message(channel, message)
-        
+
+    def action(self, action):
+        self.message('\x01ACTION '+action+'\x01')
+            
     def greeting(self, chan, nick, msg):
         greet_re = re.compile('hi', re.IGNORECASE)
 

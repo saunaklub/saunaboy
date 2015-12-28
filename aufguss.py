@@ -147,31 +147,23 @@ sauna_flavors_mixed = [
     "Waldfrüchte"
 ]
 
-# messages_aufguss_pre = [
-#     ['<m> lässt einen Moment die Tür offen und wedelt frische Luft in die Sauna..',
-#      'Letzte Gelegenheit Leute, wer raus will geht jetzt. Gleich gehts hier zur Sache!']
-# ]
-
-# messages_aufguss = [
-    
-
-# ]
-
 def saunaboyAufguss(client):
     mixed_prob = 0.1
     rand = random.random()
 
+    out = ''
+
     if(rand < mixed_prob):
-        message = ''.join([
+        out = ''.join([
             ' macht einen Aufguss "',
              random.choice(sauna_flavors_mixed),
             '" ...'])
-        client.message('\x01ACTION'+message+'\x01')
+
     else:
         flavors = random.sample(sauna_flavors, 2)
-        message = ''.join([
+        out = ''.join([
             ' macht einen ',
             flavors[0], '-', flavors[1],
             ' Aufguss ...'])
-        client.message('\x01ACTION'+message+'\x01')
-        
+
+    return out
