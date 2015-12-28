@@ -10,22 +10,24 @@ def cocktail():
     data = html.unescape(resp.read().decode('utf-8'))
 
     rid = re.search('<a href="recipe_detail\?id=([0-9]+)">', data)
-    
+
     conn.request("GET", "/recipe_detail?id=" + rid.group(1))
     resp = conn.getresponse()
     data = html.unescape(resp.read().decode('utf-8'))
 
     out = ''
-    
+
     name = re.search('<h2>(.*)</h2>', data).group(1)
     out += name + '\n\n'
-    
+
     directions = re.findall('<div class="recipeDirection">(.*)</div>', data)
     direction = re.sub('<a .*?>', '', directions[0])
     direction = direction.replace('</a>', '')
     out += direction + '\n\n'
 
-    measures = re.findall('<div class="recipeMeasure">(.*?)<a href="ingr_detail\?id=[0-9]+">(.*?)</a>', data)
+    measures = re.findall(
+        '<div class="recipeMeasure">(.*?)'
+        '<a href="ingr_detail\?id=[0-9]+">(.*?)</a>', data)
     for measure in measures:
         out += measure[0] + measure[1] + '\n'
 
@@ -33,18 +35,5 @@ def cocktail():
         direction = re.sub('<a .*?>', '', direction)
         direction = direction.replace('</a>', '')
         out += '\n' + direction
-
-    # rezept = re.search('<div id="ck-rezeptname">(.*)</div>', data)
-    # out += 'Rezept-Tipp des Tages: *' + rezept.group(1) + '*\n\n'
-
-    # zutaten = re.search('<div id="ck-zutaten">(.*)</div>', data).group(1)
-    # zutaten = zutaten.replace('<br>', '\n')
-    # out += zutaten + '\n'
-
-    # zubereitung = re.search('<div id="ck-zubereitung">(.*)</div>', data).group(1)
-    # zubereitung = zubereitung.replace('<br>', '\n')
-    # zubereitung = zubereitung.replace('<strong>Zubereitung:</strong>\n', '')
-    # zubereitung = zubereitung.replace('\\\'', '\'')
-    # out += zubereitung
 
     return out
