@@ -82,7 +82,7 @@ class SaunaBoy(pydle.MinimalClient):
             if(message == ',rezept'):
                 self.message(rezeptChefkoch())
             if(message == ',cocktail'):
-                self.message('\x01ACTION'+'macht eine runde Cocktails:'+'\x01')
+                self.message('\x01ACTION '+'macht eine runde Cocktails:'+'\x01')
                 self.message(cocktail())
                 
     def on_join(self, channel, user):
