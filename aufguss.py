@@ -147,7 +147,7 @@ sauna_flavors_mixed = [
     "Waldfrüchte"
 ]
 
-def saunaboyAufguss(client):
+def aufguss():
     mixed_prob = 0.1
     rand = random.random()
 
