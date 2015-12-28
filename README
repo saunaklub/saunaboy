@@ -4,9 +4,10 @@ Current features include:
 
 Command  | Function
 ---------|----------------------------------------
+,aufguss | make random aufguss from aroma database
 ,joke    | al lowe's cyberjoke3000
 ,fortune | print fortune, accepts parameters
 ,meyers  | random effective series item
+,rezept  | recipe of the day from chefkoch.de
 ,health  | files.saunaklub.net health information
 ,df      | print raid diskspace usage
-,aufguss | make random aufguss from aroma database

@@ -9,6 +9,7 @@ from flavors import *
 from joke import *
 from meyers import *
 from rezept import *
+from cocktail import *
 
 dnd_messages = [
     "please do not disturb our conversation.",
@@ -80,6 +81,9 @@ class SaunaBoy(pydle.MinimalClient):
                 self.message(meyersItem())
             if(message == ',rezept'):
                 self.message(rezeptChefkoch())
+            if(message == ',cocktail'):
+                self.message('\x01ACTION'+'macht eine runde Cocktails:'+'\x01')
+                self.message(cocktail())
                 
     def on_join(self, channel, user):
         if(user != 'saunaboy'):
