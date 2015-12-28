@@ -1,9 +1,7 @@
-import http.client
 import subprocess
 import shlex
 import random
 import time
-import re
 import pydle
 import getpass
 
