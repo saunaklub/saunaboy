@@ -10,7 +10,7 @@ from joke import *
 from meyers import *
 from rezept import *
 from cocktail import *
-from images import *
+from image import *
 
 dnd_messages = [
     "please do not disturb our conversation.",
@@ -85,6 +85,8 @@ class SaunaBoy(pydle.MinimalClient):
             if(message == ',cocktail'):
                 self.action('macht eine Runde Cocktails:')
                 self.message(cocktail())
+            if(message.startswith(',image '):
+                self.message(image(message[len(',image '):]))
             if(message == ',pinup'):
                 self.message(pinup())
                 
