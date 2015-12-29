@@ -85,7 +85,7 @@ class SaunaBoy(pydle.MinimalClient):
             if(message == ',cocktail'):
                 self.action('macht eine Runde Cocktails:')
                 self.message(cocktail())
-            if(message.startswith(',image '):
+            if(message.startswith(',image ')):
                 self.message(image(message[len(',image '):]))
             if(message == ',pinup'):
                 self.message(pinup())
