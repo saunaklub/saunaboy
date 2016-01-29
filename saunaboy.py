@@ -89,6 +89,8 @@ class SaunaBoy(pydle.MinimalClient):
                 self.message(image(message[len(',image '):]))
             if(message == ',pinup'):
                 self.message(pinup())
+            if(message.startswith(',action')):
+                self.action(message[len(',action '):])
                 
     def on_join(self, channel, user):
         if(user != 'saunaboy'):
