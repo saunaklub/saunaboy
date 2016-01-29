@@ -155,7 +155,6 @@ password = getpass.getpass("saunaboy password: ")
 password = 'saunaboy:'+password
 
 client = SaunaBoy('saunaboy', realname='Sven')
-client.connect('localhost', 16697,
-               tls=True, tls_verify=False,
-               password=password)
+client.connect('chat.freenode.net', 6667,
+               tls=False, tls_verify=False)
 client.handle_forever()
