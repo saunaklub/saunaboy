@@ -1,4 +1,3 @@
-import subprocess
 import shlex
 import random
 import time
@@ -11,6 +10,7 @@ from meyers import *
 from rezept import *
 from cocktail import *
 from image import *
+from commands import *
 
 dnd_messages = [
     "please do not disturb our conversation.",
@@ -50,8 +50,40 @@ command_denial_messages = [
     "Fuck off.",
     "Leave me alone."
 ]
-    
+
 class SaunaBoy(pydle.MinimalClient):
+    def usage(args):
+        width = 10
+        message = "Nutzbare Kommandos, mit ',' als Präfix:\n\n"
+        for k, v in SaunaBoy.function_map.items():
+            message += k.ljust(10) + v[1] + '\n'
+        for k, v in SaunaBoy.action_map.items():
+            message += k.ljust(10) + v[1] + '\n'
+        for k, v in SaunaBoy.command_map.items():
+            message += k.ljust(10) + v[1] + '\n'
+        return message
+
+    function_map = {
+        'raid' : (raidInfo, "Gebe files.saunaklub.net RAID Statusinformation aus."),
+        'fortune' : (fortune, "Generiere 'fortune' mit optionalen Argumenten."),
+        'witz' : (cyberjoke, "Reiße einen von Großmeister Al Lowe's Witzen."),
+        'meyers' : (meyersItem, "Gebe zufälliges Kapitel aus Scott Meyers' \"Effective C++\" Serie aus."),
+        'rezept' : (rezeptChefkoch, "Gebe das Rezept des Tages von chefkoch.de aus."),
+        'cocktail' : (cocktail, "Gebe einen zufälliges Mixgetränk von cocktaildb.com aus."),
+        'bild ' : (image, "Zeige ein Bild mit libcaca's img2txt an."),
+        'pinup' : (pinup, "Zeige ein zufälliges Pin-Up Bild an."),
+        'aktion' : (action, "Führe das Argument als Aktion aus."),
+        'hilfe' : (usage, "Gebe alle verfügbaren Kommandos aus."),
+    }
+    
+    action_map = {
+        'aufguss' : (aufguss, "Mache einen Sauna-Aufguss, grosse Auswahl an Aromen!"),
+    }
+    
+    command_map = {
+        'df' : ("df -h | grep -v tmpfs | grep -v udev", "Zeige Festplatten-Auslastung mit df an."),
+    }
+
     def on_connect(self):
          self.join(channel)
 
@@ -64,33 +96,21 @@ class SaunaBoy(pydle.MinimalClient):
         self.greeting(source, target, message)
 
         if(message.startswith(',')):
-            if(message == ',aufguss'):
-                self.action(aufguss())
-            if(message.startswith(',fortune')):
-                self.message("")
-                self.commandToChannel("fortune" + message[len(',fortune'):])
-                self.message("")
-            if(message == ',df'):
-                self.commandToChannel("df -h | grep -v tmpfs | grep -v udev")
-            if(message == ',health'):
-                self.commandPreMessage(target)
-                self.printRaidInfo()
-                self.commandPostMessage(target)
-            if(message == ',joke'):
-                self.message(cyberjoke())
-            if(message == ',meyers'):
-                self.message(meyersItem())
-            if(message == ',rezept'):
-                self.message(rezeptChefkoch())
-            if(message == ',cocktail'):
-                self.action('macht eine Runde Cocktails:')
-                self.message(cocktail())
-            if(message.startswith(',image ')):
-                self.message(image(message[len(',image '):]))
-            if(message == ',pinup'):
-                self.message(pinup())
-            if(message.startswith(',action')):
-                self.action(message[len(',action '):])
+            command = ""
+            args = ""
+            if(message.find(" ") != -1):
+                command = message[1:message.find(" ")]
+                args = message[message.find(" ")+1:]
+            else:
+                command = message[1:]
+
+            if(command in self.function_map):
+                print(self.function_map[command][0])
+                self.message(self.function_map[command][0](args))
+            if(command in self.action_map):
+                action(self.action_map[command][0](args))
+            if(command in self.command_map):
+                commandToChannel(self.command_map[command][0])
                 
     def on_join(self, channel, user):
         if(user != 'saunaboy'):
@@ -106,28 +126,7 @@ class SaunaBoy(pydle.MinimalClient):
 
     def commandDenialMessage(self, user):
         self.message(random.choice(command_denial_messages).replace("<>", user))
-        
-    def printRaidInfo(self):
-        self.message("Reporting RAID status: files.saunaklub.net")
-        self.message(" ")
-
-        self.commandToChannel("sudo mdadm --detail /dev/md0 | sed -n '13,+5p; 25,+4p'")
-
-        message = ""
-        for letter in ['b', 'c', 'd', 'e']:
-            message += '/dev/sd' + letter + ': '
-            message += self.commandToString('sudo smartctl -H /dev/sd' + letter +
-                                            ' | grep "self-assessment test"')
-        self.message(message)
-
-    def commandToString(self, command):
-        process = subprocess.Popen(['bash', '-c', command],
-                                   stdin=subprocess.PIPE,
-                                   stdout=subprocess.PIPE)
-
-        out, _ = process.communicate()
-        return out.decode('utf-8')
-        
+                
     def commandToChannel(self, command):
         process = subprocess.Popen(['bash', '-c', command],
                                    stdin=subprocess.PIPE,
@@ -139,9 +138,6 @@ class SaunaBoy(pydle.MinimalClient):
     def message(self, message):
             print(message)
             super().message(channel, message)
-
-    def action(self, action):
-        self.message('\x01ACTION '+action+'\x01')
             
     def greeting(self, chan, nick, msg):
         greet_re = re.compile('hi', re.IGNORECASE)

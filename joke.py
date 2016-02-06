@@ -1,7 +1,7 @@
 import http.client
 import re
 
-def cyberjoke():
+def cyberjoke(args):
     conn = http.client.HTTPConnection("www.allowe.com")
     conn.request("GET", "/humor/cj-main/cyberjoke-archive.html?option=com_jokes&view=search&search=ffunny&funny=1")
 

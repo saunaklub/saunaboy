@@ -2,7 +2,7 @@ import re
 import http.client
 import html
 
-def cocktail():
+def cocktail(args):
     conn = http.client.HTTPConnection("www.cocktaildb.com")
 
     conn.request("GET", "/?_action_randomRecipe=1")

@@ -3,12 +3,12 @@ import subprocess
 import shlex
 import random
 
-def image(path):
+def image(args):
     process = subprocess.Popen(['img2txt',
                                 '-d', 'none',
                                 '-W', '120',
                                 '-f', 'irc',
-                                path],
+                                args],
                                stdin=subprocess.PIPE,
                                stdout=subprocess.PIPE)
 
@@ -17,7 +17,7 @@ def image(path):
     return out.decode()
     
 
-def pinup():
+def pinup(args):
     directory = '/mnt/raid/images/saunaboy/pinup/'
     image = random.choice(os.listdir(directory))
 

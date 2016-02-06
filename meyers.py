@@ -200,7 +200,7 @@ items_effective_modern_cpp = [
 
 item_lists = [items_effective_cpp, items_effective_modern_cpp, items_more_effective_cpp, items_effective_stl]
 
-def meyersItem():
+def meyersItem(args):
     items = random.choice(item_lists)
     out = items[0] + " "
     out += random.choice(items[1:])

@@ -2,7 +2,7 @@ import re
 import http.client
 import html
 
-def rezeptChefkoch():
+def rezeptChefkoch(args):
     conn = http.client.HTTPConnection("www.chefkoch.de")
     conn.request("GET", "/napping/js/script.js")
 
