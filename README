@@ -3,7 +3,7 @@ Unser freundlicher IRC-Kompangnon im altehrwürdigen #saunaklub.
 Aktuell verfügbare Kommandos:
 
 | Kommando | Beschreibung                                                          |
-| -------- |-----------------------------------------------------------------------|
+| -------- | --------------------------------------------------------------------- |
 | bild     | Zeige ein Bild mit libcaca's img2txt an.                              |
 | aktion   | Führe das Argument als Aktion aus.                                    |
 | meyers   | Gebe zufälliges Kapitel aus Scott Meyers' "Effective C++" Serie aus.  |
