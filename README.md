@@ -16,4 +16,3 @@ Aktuell verfügbare Kommandos:
 | fortune  | Generiere 'fortune' mit optionalen Argumenten.                        |
 | aufguss  | Mache einen Sauna-Aufguss, grosse Auswahl an Aromen!                  |
 | df       | Zeige Festplatten-Auslastung mit df an.                               |
-
