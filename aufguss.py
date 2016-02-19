@@ -155,14 +155,14 @@ def aufguss(args):
 
     if(rand < mixed_prob):
         out = ''.join([
-            ' macht einen Aufguss "',
+            'macht einen Aufguss "',
              random.choice(sauna_flavors_mixed),
             '" ...'])
 
     else:
         flavors = random.sample(sauna_flavors, 2)
         out = ''.join([
-            ' macht einen ',
+            'macht einen ',
             flavors[0], '-', flavors[1],
             ' Aufguss ...'])
 

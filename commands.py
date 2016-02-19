@@ -1,7 +1,7 @@
 import subprocess
 
 def action(args):
-    return '\x01ACTION'+args+'\x01'
+    return '\x01ACTION '+args+'\x01'
 
 def commandToString(command):
     process = subprocess.Popen(['bash', '-c', command],
