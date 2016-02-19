@@ -9,7 +9,7 @@ def commandToString(command):
                                stdout=subprocess.PIPE)
 
     out, _ = process.communicate()
-    return out.decode('utf-8')
+    return out.decode('utf-8').replace("\t", "        ")
 
 
 def raidInfo(args):
