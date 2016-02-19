@@ -108,7 +108,8 @@ class SaunaBoy(pydle.MinimalClient):
                 print(self.function_map[command][0])
                 self.message(self.function_map[command][0](args))
             if(command in self.action_map):
-                action(self.action_map[command][0](args))
+                print("action: " + command)
+                self.message(action(self.action_map[command][0](args)))
             if(command in self.command_map):
                 commandToChannel(self.command_map[command][0])
                 
