@@ -79,7 +79,7 @@ class SaunaBoy(pydle.MinimalClient):
         }
 
         self.function_map = {
-            'nick' : (self.set_nickname, "Setzt den IRC-Spitznamen.")
+            'nick' : (self.set_nickname, "Setze den IRC-Spitznamen.")
         }
 
     def usage(self, args):
