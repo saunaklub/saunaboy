@@ -12,7 +12,7 @@ def rezeptChefkoch(args):
     out = ''
 
     rezept = re.search('<div id="ck-rezeptname">(.*)</div>', data)
-    out += 'Rezept-Tipp des Tages: *' + rezept.group(1) + '*\n\n'
+    out += 'Rezept-Tipp des Tages: ' + rezept.group(1) + '\n\n'
 
     zutaten = re.search('<div id="ck-zutaten">(.*)</div>', data).group(1)
     zutaten = zutaten.replace('<br>', '\n')
