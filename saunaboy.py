@@ -1,3 +1,4 @@
+import sys
 import shlex
 import random
 import time
@@ -169,7 +170,11 @@ channel = '#saunaklub'
 password = getpass.getpass("saunaboy password: ")
 password = 'saunaboy:'+password
 
-client = SaunaBoy(nick='saunaboy', realname='Sven')
+nick = 'saunaboy'
+if(len(sys.argv) > 1):
+    nick = sys.argv[1]
+
+client = SaunaBoy(nick=nick, realname='Sven')
 client.connect('chat.freenode.net', 6667,
                tls=False, tls_verify=False)
 client.handle_forever()
