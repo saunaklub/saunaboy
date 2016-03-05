@@ -11,6 +11,18 @@ def commandToString(command):
     out, _ = process.communicate()
     return out.decode('utf-8').replace("\t", "        ")
 
+def sanitizeArgs(args):
+    if(";" in args or
+       "\\" in args or
+       "`" in args or
+       "$" in args or
+       "|" in args or
+       ">" in args or
+       "<" in args):
+        return ""
+
+    return args
+
 
 def raidInfo(args):
     message = "Reporting RAID status: files.saunaklub.net\n\n"

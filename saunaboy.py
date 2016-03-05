@@ -77,6 +77,7 @@ class SaunaBoy(pydle.MinimalClient):
 
         self.command_map = {
             'df' : ("df -h | grep -v tmpfs | grep -v udev", "Zeige Festplatten-Auslastung mit df an."),
+            'wtf' : ("wtf {}", "Suche im wtf Akronym-Wörterbuch."),
         }
 
         self.function_map = {
@@ -86,13 +87,13 @@ class SaunaBoy(pydle.MinimalClient):
     def usage(self, args):
         width = 10
         message = "Nutzbare Kommandos, mit ',' als Präfix:\n\n"
-        for k, v in SaunaBoy.message_map.items():
+        for k, v in self.message_map.items():
             message += k.ljust(10) + v[1] + '\n'
-        for k, v in SaunaBoy.action_map.items():
+        for k, v in self.action_map.items():
             message += k.ljust(10) + v[1] + '\n'
-        for k, v in SaunaBoy.command_map.items():
+        for k, v in self.command_map.items():
             message += k.ljust(10) + v[1] + '\n'
-        for k, v in SaunaBoy.function_map.items():
+        for k, v in self.function_map.items():
             message += k.ljust(10) + v[1] + '\n'
         return message
 
@@ -127,7 +128,11 @@ class SaunaBoy(pydle.MinimalClient):
                 print("action: " + command)
                 self.message(action(self.action_map[command][0](args)))
             if(command in self.command_map):
-                commandToChannel(self.command_map[command][0])
+                command = self.command_map[command][0]
+                if("{}" in command):
+                    args = sanitizeArgs(args)
+                    command = command.replace("{}", args)
+                self.commandToChannel(command)
             if(command in self.function_map):
                 print(args)
                 self.function_map[command][0](args)
@@ -150,7 +155,8 @@ class SaunaBoy(pydle.MinimalClient):
     def commandToChannel(self, command):
         process = subprocess.Popen(['bash', '-c', command],
                                    stdin=subprocess.PIPE,
-                                   stdout=subprocess.PIPE)
+                                   stdout=subprocess.PIPE,
+                                   stderr=subprocess.STDOUT)
         out, _ = process.communicate()
         out = out.decode('utf-8').rstrip('\n').replace('\r', '').expandtabs(tabsize=8)
         self.message(out)
