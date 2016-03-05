@@ -18,7 +18,7 @@ def image(args):
     
 
 def pinup(args):
-    directory = '/mnt/raid/images/saunaboy/pinup/'
-    image = random.choice(os.listdir(directory))
+    directory = '/mnt/files/images/saunaboy/pinup/'
+    filename = random.choice(os.listdir(directory))
 
-    return image(directory+image)
+    return image(directory+filename)
