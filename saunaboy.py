@@ -175,6 +175,7 @@ if(len(sys.argv) > 1):
     nick = sys.argv[1]
 
 client = SaunaBoy(nick=nick, realname='Sven')
-client.connect('chat.freenode.net', 6667,
-               tls=False, tls_verify=False)
+client.connect('irc.saunaklub.net', 16697,
+               tls=True, tls_verify=False,
+               password=password)
 client.handle_forever()
