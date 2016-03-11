@@ -12,6 +12,7 @@ from rezept import *
 from cocktail import *
 from image import *
 from commands import *
+from translate import *
 
 dnd_messages = [
     "please do not disturb our conversation.",
@@ -59,6 +60,8 @@ class SaunaBoy(pydle.MinimalClient):
         self.nick = nick
 
         self.message_map = {
+            'hilfe' : (self.usage, "Gebe alle verfügbaren Kommandos aus."),
+            'aktion' : (action, "Führe das Argument als Aktion aus."),
             'raid' : (raidInfo, "Gebe files.saunaklub.net RAID Statusinformation aus."),
             'fortune' : (fortune, "Generiere 'fortune' mit optionalen Argumenten."),
             'witz' : (cyberjoke, "Reiße einen von Großmeister Al Lowe's Witzen."),
@@ -67,8 +70,7 @@ class SaunaBoy(pydle.MinimalClient):
             'cocktail' : (cocktail, "Gebe einen zufälliges Mixgetränk von cocktaildb.com aus."),
             'bild ' : (image, "Zeige ein Bild mit libcaca's img2txt an."),
             'pinup' : (pinup, "Zeige ein zufälliges Pin-Up Bild an."),
-            'aktion' : (action, "Führe das Argument als Aktion aus."),
-            'hilfe' : (self.usage, "Gebe alle verfügbaren Kommandos aus."),
+            'trans' : (translate, "Uebersetze mit translate-shell. Erster parameter from:to."),
         }
 
         self.action_map = {
