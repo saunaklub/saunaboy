@@ -13,6 +13,7 @@ from cocktail import *
 from image import *
 from commands import *
 from translate import *
+from wiki import *
 
 dnd_messages = [
     "please do not disturb our conversation.",
@@ -71,6 +72,9 @@ class SaunaBoy(pydle.MinimalClient):
             'bild ' : (image, "Zeige ein Bild mit libcaca's img2txt an."),
             'pinup' : (pinup, "Zeige ein zufälliges Pin-Up Bild an."),
             'trans' : (translate, "Uebersetze mit translate-shell. Erster parameter from:to."),
+            'tr' : (translateQuiet, "Uebersetze mit translate-shell (kurze Ausgabe)."),
+            'dict' : (translateDict, "Uebersetze mit translate-shell (Wörterbuch Modus)."),
+            'wiki' : (wiki, "Schlage auf Wikipedia nach."),
         }
 
         self.action_map = {
