@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import sys
 import shlex
 import random
@@ -179,15 +181,17 @@ class SaunaBoy(pydle.MinimalClient):
             self.message(source, reply)
 
 channel = '#saunaklub'
-password = getpass.getpass("saunaboy password: ")
-password = 'saunaboy:'+password
+# password = getpass.getpass("saunaboy password: ")
+# password = 'saunaboy:'+password
 
 nick = 'saunaboy'
 if(len(sys.argv) > 1):
     nick = sys.argv[1]
 
 client = SaunaBoy(nick=nick, realname='Sven')
-client.connect('irc.saunaklub.net', 16697,
-               tls=True, tls_verify=False,
-               password=password)
+# client.connect('irc.saunaklub.net', 16697,
+#                tls=True, tls_verify=False,
+#                password=password)
+client.connect('irc.freenode.net', 6667,
+               tls=False, tls_verify=False)
 client.handle_forever()

@@ -1,0 +1,3 @@
+[submodule "pydle"]
+	path = pydle
+	url = https://github.com/Shizmob/pydle.git

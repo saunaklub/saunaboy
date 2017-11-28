@@ -1,0 +1,4 @@
+#!/bin/bash
+
+PYTHONPATH=pydle:$PYTHONPATH
+python3 saunaboy.py
